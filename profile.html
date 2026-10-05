@@ -1,0 +1,1221 @@
+
+
+<!DOCTYPE html>
+<html lang="en" ng-app="medicineApp">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>MedMate | My Profile</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "DM Sans", sans-serif;
+            background: #f4f8f7;
+            color: #172033;
+        }
+
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .profile-layout {
+            min-height: 100vh;
+            display: flex;
+        }
+
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            width: 245px;
+            min-height: 100vh;
+            background: linear-gradient(
+                180deg,
+                #047857,
+                #059669
+            );
+            padding: 28px 18px;
+            display: flex;
+            flex-direction: column;
+            color: white;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 10px 30px;
+        }
+
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+
+        .logo h2 {
+            font-family: "Poppins", sans-serif;
+            font-size: 22px;
+            margin: 0;
+            font-weight: 800;
+        }
+
+
+        .logo small {
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            opacity: 0.75;
+        }
+
+
+        .menu-title {
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            opacity: 0.6;
+            padding: 0 12px;
+            margin-bottom: 10px;
+        }
+
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+
+        .sidebar li {
+            margin-bottom: 6px;
+        }
+
+
+        .sidebar a {
+            text-decoration: none;
+            color: rgba(255,255,255,0.76);
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 14px;
+            border-radius: 13px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+
+
+        .sidebar a i {
+            width: 20px;
+            text-align: center;
+        }
+
+
+        .sidebar li.active a,
+        .sidebar a:hover {
+            background: rgba(255,255,255,0.16);
+            color: white;
+        }
+
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+
+        .health-mini-card {
+            background: rgba(255,255,255,0.11);
+            border: 1px solid rgba(255,255,255,0.10);
+            border-radius: 16px;
+            padding: 14px;
+            margin: 0 4px 14px;
+        }
+
+
+        .health-mini-card i {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: #bbf7d0;
+        }
+
+
+        .health-mini-card strong {
+            display: block;
+            font-size: 12px;
+        }
+
+
+        .health-mini-card p {
+            margin: 4px 0 0;
+            font-size: 10px;
+            line-height: 1.5;
+            color: rgba(255,255,255,0.7);
+        }
+
+
+        .logout {
+            margin-top: 5px;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main-content {
+            margin-left: 245px;
+            width: calc(100% - 245px);
+            min-height: 100vh;
+            padding: 35px 45px;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .top-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+
+        .breadcrumb {
+            display: flex;
+            gap: 9px;
+            align-items: center;
+            color: #94a3b8;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+
+        .breadcrumb i {
+            font-size: 8px;
+        }
+
+
+        .breadcrumb strong {
+            color: #059669;
+        }
+
+
+        .top-header h1 {
+            font-family: "Poppins", sans-serif;
+            font-size: 29px;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -0.7px;
+        }
+
+
+        .top-header p {
+            color: #64748b;
+            margin-top: 5px;
+            font-size: 13px;
+        }
+
+
+        .header-icon {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #059669;
+            box-shadow: 0 8px 20px rgba(15,23,42,0.05);
+        }
+
+
+        /* =========================
+           PROFILE HERO
+        ========================= */
+
+        .profile-hero {
+            background:
+                linear-gradient(
+                    135deg,
+                    #047857,
+                    #059669,
+                    #10b981
+                );
+            border-radius: 24px;
+            padding: 30px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow:
+                0 18px 35px rgba(5,150,105,0.18);
+        }
+
+
+        .profile-hero::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            right: -80px;
+            top: -120px;
+        }
+
+
+        .profile-hero::after {
+            content: "";
+            position: absolute;
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            right: 180px;
+            bottom: -130px;
+        }
+
+
+        .profile-hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+
+        .avatar {
+            width: 95px;
+            height: 95px;
+            border-radius: 28px;
+            background: rgba(255,255,255,0.18);
+            border: 2px solid rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Poppins", sans-serif;
+            font-size: 35px;
+            font-weight: 800;
+            backdrop-filter: blur(10px);
+            flex-shrink: 0;
+        }
+
+
+        .profile-hero-text .label {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            font-weight: 800;
+            opacity: 0.75;
+            margin-bottom: 5px;
+        }
+
+
+        .profile-hero-text h2 {
+            font-family: "Poppins", sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+
+        .profile-hero-text p {
+            margin: 5px 0 0;
+            font-size: 13px;
+            color: rgba(255,255,255,0.75);
+        }
+
+
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.14);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 20px;
+            padding: 7px 11px;
+            font-size: 10px;
+            margin-top: 12px;
+        }
+
+
+        /* =========================
+           CONTENT GRID
+        ========================= */
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 22px;
+        }
+
+
+        .profile-card {
+            background: white;
+            border: 1px solid #e8eef0;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow:
+                0 8px 25px rgba(15,23,42,0.04);
+        }
+
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #edf2f3;
+            margin-bottom: 20px;
+        }
+
+
+        .card-title-icon {
+            width: 39px;
+            height: 39px;
+            border-radius: 12px;
+            background: #ecfdf5;
+            color: #059669;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .card-title h3 {
+            font-family: "Poppins", sans-serif;
+            font-size: 16px;
+            margin: 0;
+            font-weight: 700;
+        }
+
+
+        .card-title span {
+            display: block;
+            font-size: 10px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+
+        /* =========================
+           DETAIL ROWS
+        ========================= */
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+
+        .detail-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            background: #f0fdf4;
+            color: #059669;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+
+        .detail-info {
+            flex: 1;
+        }
+
+
+        .detail-info small {
+            display: block;
+            color: #94a3b8;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+
+
+        .detail-info strong {
+            display: block;
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 700;
+            word-break: break-word;
+        }
+
+
+        /* =========================
+           HEALTH CARD
+        ========================= */
+
+        .health-status {
+            text-align: center;
+            padding: 8px 0 18px;
+        }
+
+
+        .health-circle {
+            width: 125px;
+            height: 125px;
+            border-radius: 50%;
+            margin: 0 auto 17px;
+            background:
+                conic-gradient(
+                    #10b981 0deg 288deg,
+                    #dcfce7 288deg 360deg
+                );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .health-circle-inner {
+            width: 101px;
+            height: 101px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+
+        .health-circle-inner strong {
+            font-family: "Poppins", sans-serif;
+            font-size: 27px;
+            color: #0f172a;
+        }
+
+
+        .health-circle-inner span {
+            color: #94a3b8;
+            font-size: 10px;
+        }
+
+
+        .health-status h3 {
+            font-family: "Poppins", sans-serif;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+
+        .health-status p {
+            color: #64748b;
+            font-size: 11px;
+        }
+
+
+        .health-points {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+
+        .health-point {
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+
+        .health-point i {
+            color: #059669;
+            margin-bottom: 6px;
+        }
+
+
+        .health-point strong {
+            display: block;
+            font-size: 11px;
+        }
+
+
+        .health-point span {
+            display: block;
+            color: #94a3b8;
+            font-size: 9px;
+            margin-top: 2px;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .profile-footer {
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            color: #94a3b8;
+            font-size: 10px;
+            padding: 0 4px;
+        }
+
+
+        .profile-footer i {
+            color: #10b981;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 950px) {
+
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 750px) {
+
+            .sidebar {
+                width: 72px;
+                padding: 20px 10px;
+            }
+
+            .logo {
+                justify-content: center;
+                padding: 0 0 25px;
+            }
+
+            .logo-text,
+            .logo small,
+            .menu-title,
+            .sidebar a span,
+            .health-mini-card {
+                display: none;
+            }
+
+            .sidebar a {
+                justify-content: center;
+                padding: 13px;
+            }
+
+            .main-content {
+                margin-left: 72px;
+                width: calc(100% - 72px);
+                padding: 25px 20px;
+            }
+
+        }
+
+
+        @media (max-width: 550px) {
+
+            .top-header h1 {
+                font-size: 23px;
+            }
+
+            .profile-hero {
+                padding: 22px;
+            }
+
+            .profile-hero-content {
+                align-items: flex-start;
+            }
+
+            .avatar {
+                width: 70px;
+                height: 70px;
+                border-radius: 20px;
+                font-size: 25px;
+            }
+
+            .profile-hero-text h2 {
+                font-size: 21px;
+            }
+
+            .profile-card {
+                padding: 20px;
+            }
+
+            .profile-footer {
+                flex-direction: column;
+                gap: 7px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="profile-layout">
+
+
+    <!-- ======================================
+         SIDEBAR
+    ======================================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                <i class="fa-solid fa-capsules"></i>
+            </div>
+
+            <div class="logo-text">
+                <h2>MedMate</h2>
+                <small>HEALTH COMPANION</small>
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            MAIN MENU
+        </div>
+
+
+        <ul>
+
+            <li>
+                <a href="dashboard.html">
+                    <i class="fa-solid fa-table-cells-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="add-medicine.html">
+                    <i class="fa-solid fa-prescription-bottle-medical"></i>
+                    <span>Add Medicine</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="reminder.html">
+                    <i class="fa-regular fa-clock"></i>
+                    <span>Reminder List</span>
+                </a>
+            </li>
+
+
+            <li class="active">
+                <a href="profile.html">
+                    <i class="fa-regular fa-user"></i>
+                    <span>My Profile</span>
+                </a>
+            </li>
+
+        </ul>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="health-mini-card">
+
+                <i class="fa-solid fa-heart-pulse"></i>
+
+                <strong>
+                    Stay healthy
+                </strong>
+
+                <p>
+                    Keep your medication routine consistent.
+                </p>
+
+            </div>
+
+
+            <a href="index.html" class="logout">
+
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+                <span>Logout</span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ======================================
+         MAIN CONTENT
+    ======================================= -->
+
+    <main class="main-content">
+
+
+        <!-- Header -->
+
+        <header class="top-header">
+
+            <div>
+
+                <div class="breadcrumb">
+
+                    <span>MEDMATE</span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                    <strong>MY PROFILE</strong>
+
+                </div>
+
+
+                <h1>
+                    My Profile
+                </h1>
+
+                <p>
+                    Manage your personal information and health preferences.
+                </p>
+
+            </div>
+
+
+            <div class="header-icon">
+
+                <i class="fa-regular fa-user"></i>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ======================================
+             PROFILE HERO
+        ======================================= -->
+
+        <section class="profile-hero">
+
+            <div class="profile-hero-content">
+
+
+                <!-- Dynamic Avatar -->
+
+                <div class="avatar" id="profileAvatar">
+                    H
+                </div>
+
+
+                <div class="profile-hero-text">
+
+                    <div class="label">
+                        MEDMATE MEMBER
+                    </div>
+
+                    <h2 id="profileName">
+                        User
+                    </h2>
+
+                    <p id="profileEmail">
+                        user@email.com
+                    </p>
+
+
+                    <div class="verified-badge">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        Profile Active
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ======================================
+             PROFILE CONTENT
+        ======================================= -->
+
+        <section class="profile-grid">
+
+
+            <!-- Personal information -->
+
+            <div class="profile-card">
+
+                <div class="card-title">
+
+                    <div class="card-title-icon">
+
+                        <i class="fa-regular fa-id-card"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Personal Information
+                        </h3>
+
+                        <span>
+                            Your account details
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Name -->
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+
+                        <i class="fa-regular fa-user"></i>
+
+                    </div>
+
+                    <div class="detail-info">
+
+                        <small>
+                            FULL NAME
+                        </small>
+
+                        <strong id="detailName">
+                            User
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Email -->
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+
+                        <i class="fa-regular fa-envelope"></i>
+
+                    </div>
+
+                    <div class="detail-info">
+
+                        <small>
+                            EMAIL ADDRESS
+                        </small>
+
+                        <strong id="detailEmail">
+                            user@email.com
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Phone -->
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+
+                        <i class="fa-solid fa-phone"></i>
+
+                    </div>
+
+                    <div class="detail-info">
+
+                        <small>
+                            PHONE
+                        </small>
+
+                        <strong>
+                            +91 9876543210
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Country -->
+
+                <div class="detail-row">
+
+                    <div class="detail-icon">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                    </div>
+
+                    <div class="detail-info">
+
+                        <small>
+                            COUNTRY
+                        </small>
+
+                        <strong>
+                            India
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Health overview -->
+
+            <div class="profile-card">
+
+                <div class="card-title">
+
+                    <div class="card-title-icon">
+
+                        <i class="fa-solid fa-heart-pulse"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Health Overview
+                        </h3>
+
+                        <span>
+                            Medication consistency
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="health-status">
+
+                    <div class="health-circle">
+
+                        <div class="health-circle-inner">
+
+                            <strong>
+                                80%
+                            </strong>
+
+                            <span>
+                                Progress
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <h3>
+                        Keep going!
+                    </h3>
+
+                    <p>
+                        Stay consistent with your medication schedule.
+                    </p>
+
+                </div>
+
+
+                <div class="health-points">
+
+                    <div class="health-point">
+
+                        <i class="fa-solid fa-pills"></i>
+
+                        <strong>
+                            Medicines
+                        </strong>
+
+                        <span>
+                            Scheduled
+                        </span>
+
+                    </div>
+
+
+                    <div class="health-point">
+
+                        <i class="fa-solid fa-bell"></i>
+
+                        <strong>
+                            Reminders
+                        </strong>
+
+                        <span>
+                            Active
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <footer class="profile-footer">
+
+            <span>
+                <i class="fa-solid fa-heart-pulse"></i>
+                Your health, our priority.
+            </span>
+
+            <span>
+                MedMate © 2026
+            </span>
+
+        </footer>
+
+
+    </main>
+
+</div>
+
+
+
+<!-- ======================================
+     DYNAMIC USER SCRIPT
+======================================= -->
+
+<script>
+
+    /*
+       Get the user information saved
+       by index.html during login.
+    */
+
+    const savedName =
+        localStorage.getItem("medmate_username");
+
+    const savedEmail =
+        localStorage.getItem("medmate_email");
+
+
+    /*
+       If user information exists,
+       display it on the profile page.
+    */
+
+    if (savedName) {
+
+        document.getElementById("profileName").textContent =
+            savedName;
+
+        document.getElementById("detailName").textContent =
+            savedName;
+
+
+        /*
+           First letter of user's name
+           becomes the profile avatar.
+        */
+
+        document.getElementById("profileAvatar").textContent =
+            savedName.charAt(0).toUpperCase();
+
+    }
+
+
+    if (savedEmail) {
+
+        document.getElementById("profileEmail").textContent =
+            savedEmail;
+
+        document.getElementById("detailEmail").textContent =
+            savedEmail;
+
+    }
+
+
+    /*
+       If no user is logged in,
+       return to login page.
+    */
+
+    if (!savedName || !savedEmail) {
+
+        window.location.href = "index.html";
+
+    }
+
+</script>
+
+
+</body>
+</html>

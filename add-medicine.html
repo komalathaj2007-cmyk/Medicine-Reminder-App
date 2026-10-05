@@ -1,0 +1,882 @@
+```html
+<!DOCTYPE html>
+<html lang="en" ng-app="medicineApp">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MedMate | Add Medicine</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          rel="stylesheet">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/controller.js"></script>
+
+</head>
+
+
+<body ng-controller="MedicineController">
+
+
+<div class="dashboard">
+
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                <i class="fa-solid fa-capsules"></i>
+            </div>
+
+            <div>
+                <h2>MedMate</h2>
+                <small>HEALTH COMPANION</small>
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            MAIN MENU
+        </div>
+
+
+        <ul>
+
+            <li>
+                <a href="dashboard.html">
+                    <i class="fa-solid fa-grid-2"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+
+            <li class="active">
+                <a href="add-medicine.html">
+                    <i class="fa-solid fa-prescription-bottle-medical"></i>
+                    <span>Add Medicine</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="reminder.html">
+                    <i class="fa-regular fa-clock"></i>
+                    <span>Reminder List</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="profile.html">
+                    <i class="fa-regular fa-user"></i>
+                    <span>My Profile</span>
+                </a>
+            </li>
+
+        </ul>
+
+
+        <div class="sidebar-spacer"></div>
+
+
+        <!-- HEALTH CARD -->
+
+        <div class="sidebar-health-card">
+
+            <div class="health-card-icon">
+                <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+
+            <div>
+
+                <strong>Stay on track</strong>
+
+                <p>
+                    Small steps every day
+                    make a healthier you.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <a href="index.html" class="logout">
+
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+            <span>Logout</span>
+
+        </a>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- TOP HEADER -->
+
+        <header class="page-header">
+
+            <div>
+
+                <div class="breadcrumb">
+
+                    <span>MEDICATION</span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                    <strong>Add Medicine</strong>
+
+                </div>
+
+                <h1>
+                    Add your medicine
+                    <span>💊</span>
+                </h1>
+
+                <p>
+                    Set up your medication details and create a
+                    simple reminder for your daily routine.
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <div class="secure-badge">
+
+                    <i class="fa-solid fa-shield-heart"></i>
+
+                    <div>
+                        <strong>Private & Secure</strong>
+                        <small>Your health data stays protected</small>
+                    </div>
+
+                </div>
+
+                <div class="notification-button">
+
+                    <i class="fa-regular fa-bell"></i>
+
+                    <span>2</span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+             PROGRESS
+             ===================================================== -->
+
+        <div class="progress-area">
+
+            <div class="progress-step active">
+
+                <div class="step-number">
+                    1
+                </div>
+
+                <div>
+                    <strong>Medicine details</strong>
+                    <small>Basic information</small>
+                </div>
+
+            </div>
+
+
+            <div class="progress-line"></div>
+
+
+            <div class="progress-step">
+
+                <div class="step-number">
+                    2
+                </div>
+
+                <div>
+                    <strong>Reminder</strong>
+                    <small>Set your schedule</small>
+                </div>
+
+            </div>
+
+
+            <div class="progress-line"></div>
+
+
+            <div class="progress-step">
+
+                <div class="step-number">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+
+                <div>
+                    <strong>Done</strong>
+                    <small>You're all set</small>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             MAIN FORM AREA
+             ===================================================== -->
+
+        <div class="premium-add-layout">
+
+
+            <!-- =================================================
+                 LEFT VISUAL PANEL
+                 ================================================= -->
+
+            <section class="visual-panel">
+
+
+                <div class="visual-glow glow-one"></div>
+                <div class="visual-glow glow-two"></div>
+
+
+                <!-- TOP LABEL -->
+
+                <div class="visual-label">
+
+                    <i class="fa-solid fa-sparkles"></i>
+
+                    SMART MEDICATION
+
+                </div>
+
+
+                <!-- MAIN MESSAGE -->
+
+                <h2>
+                    Your health
+                    <br>
+                    <span>matters every day.</span>
+                </h2>
+
+
+                <p class="visual-description">
+
+                    Keep all your medicines organized in one
+                    simple place and stay consistent with
+                    your medication routine.
+
+                </p>
+
+
+                <!-- MEDICAL ILLUSTRATION -->
+
+                <div class="big-medical-illustration">
+
+
+                    <!-- BACK CIRCLES -->
+
+                    <div class="illustration-circle circle-1"></div>
+
+                    <div class="illustration-circle circle-2"></div>
+
+
+                    <!-- MEDICAL CARD -->
+
+                    <div class="floating-medical-card">
+
+                        <div class="medical-card-top">
+
+                            <div class="mini-logo">
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+
+                            <span>MEDICINE</span>
+
+                            <i class="fa-solid fa-ellipsis"></i>
+
+                        </div>
+
+
+                        <div class="medicine-display">
+
+                            <div class="capsule-large">
+
+                                <div></div>
+
+                            </div>
+
+                            <div>
+
+                                <strong>Daily Care</strong>
+
+                                <small>Medication</small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="medicine-progress">
+
+                            <div class="progress-bar-fill"></div>
+
+                        </div>
+
+
+                        <div class="medicine-status">
+
+                            <span>
+                                <i class="fa-solid fa-circle-check"></i>
+                                Schedule ready
+                            </span>
+
+                            <strong>80%</strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FLOATING PILL -->
+
+                    <div class="floating-object floating-pill-object">
+
+                        <i class="fa-solid fa-pills"></i>
+
+                    </div>
+
+
+                    <!-- FLOATING HEART -->
+
+                    <div class="floating-object floating-heart-object">
+
+                        <i class="fa-solid fa-heart-pulse"></i>
+
+                    </div>
+
+
+                    <!-- FLOATING CLOCK -->
+
+                    <div class="floating-object floating-clock-object">
+
+                        <i class="fa-regular fa-clock"></i>
+
+                    </div>
+
+
+                    <!-- DOCTOR CROSS -->
+
+                    <div class="doctor-cross">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- TIPS -->
+
+                <div class="health-tips">
+
+                    <div class="tip-icon">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>Quick tip</strong>
+
+                        <p>
+                            Add the exact dosage and reminder
+                            time to make your schedule easier to follow.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 RIGHT FORM
+                 ================================================= -->
+
+            <section class="premium-form-card">
+
+
+                <!-- FORM HEADING -->
+
+                <div class="form-title-area">
+
+                    <div class="form-title-icon">
+
+                        <i class="fa-solid fa-prescription-bottle-medical"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>MEDICATION PROFILE</span>
+
+                        <h2>Medicine information</h2>
+
+                        <p>
+                            Enter the details of your medicine below.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <form ng-submit="addMedicine()">
+
+
+                    <!-- MEDICINE NAME -->
+
+                    <div class="premium-field">
+
+                        <label>
+
+                            <span>
+                                <i class="fa-solid fa-pills"></i>
+                                Medicine name
+                            </span>
+
+                            <small>Required</small>
+
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-capsules field-icon"></i>
+
+                            <input
+                                type="text"
+                                ng-model="name"
+                                placeholder="e.g. Paracetamol"
+                                required>
+
+                            <i class="fa-solid fa-check input-check"></i>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="premium-field">
+
+                        <label>
+
+                            <span>
+                                <i class="fa-solid fa-shapes"></i>
+                                Medicine type
+                            </span>
+
+                            <small>Choose one</small>
+
+                        </label>
+
+
+                        <div class="type-options">
+
+                            <label class="type-option">
+
+                                <input
+                                    type="radio"
+                                    ng-model="category"
+                                    value="Tablet">
+
+                                <div>
+
+                                    <i class="fa-solid fa-tablets"></i>
+
+                                    <span>Tablet</span>
+
+                                </div>
+
+                            </label>
+
+
+                            <label class="type-option">
+
+                                <input
+                                    type="radio"
+                                    ng-model="category"
+                                    value="Capsule">
+
+                                <div>
+
+                                    <i class="fa-solid fa-capsules"></i>
+
+                                    <span>Capsule</span>
+
+                                </div>
+
+                            </label>
+
+
+                            <label class="type-option">
+
+                                <input
+                                    type="radio"
+                                    ng-model="category"
+                                    value="Syrup">
+
+                                <div>
+
+                                    <i class="fa-solid fa-bottle-droplet"></i>
+
+                                    <span>Syrup</span>
+
+                                </div>
+
+                            </label>
+
+
+                            <label class="type-option">
+
+                                <input
+                                    type="radio"
+                                    ng-model="category"
+                                    value="Drops">
+
+                                <div>
+
+                                    <i class="fa-solid fa-eye-dropper"></i>
+
+                                    <span>Drops</span>
+
+                                </div>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- DOSAGE + FREQUENCY -->
+
+                    <div class="premium-two-column">
+
+
+                        <div class="premium-field">
+
+                            <label>
+
+                                <span>
+                                    <i class="fa-solid fa-weight-scale"></i>
+                                    Dosage
+                                </span>
+
+                                <small>Required</small>
+
+                            </label>
+
+
+                            <div class="input-wrapper">
+
+                                <i class="fa-solid fa-prescription-bottle field-icon"></i>
+
+                                <input
+                                    type="text"
+                                    ng-model="dose"
+                                    placeholder="e.g. 500 mg"
+                                    required>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="premium-field">
+
+                            <label>
+
+                                <span>
+                                    <i class="fa-solid fa-repeat"></i>
+                                    Frequency
+                                </span>
+
+                                <small>Required</small>
+
+                            </label>
+
+
+                            <div class="select-wrapper">
+
+                                <i class="fa-solid fa-arrows-rotate"></i>
+
+                                <select
+                                    ng-model="frequency"
+                                    required>
+
+                                    <option value="">
+                                        Select frequency
+                                    </option>
+
+                                    <option value="Daily">
+                                        Once Daily
+                                    </option>
+
+                                    <option value="Twice Daily">
+                                        Twice Daily
+                                    </option>
+
+                                    <option value="Weekly">
+                                        Weekly
+                                    </option>
+
+                                    <option value="Monthly">
+                                        Monthly
+                                    </option>
+
+                                </select>
+
+                                <i class="fa-solid fa-chevron-down"></i>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- REMINDER -->
+
+                    <div class="reminder-box">
+
+                        <div class="reminder-heading">
+
+                            <div class="reminder-icon">
+
+                                <i class="fa-regular fa-clock"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>Set your reminder</strong>
+
+                                <p>
+                                    Choose when you want to take this medicine.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="premium-two-column">
+
+
+                            <div class="premium-field">
+
+                                <label>
+
+                                    <span>
+                                        <i class="fa-regular fa-calendar"></i>
+                                        Start date
+                                    </span>
+
+                                </label>
+
+
+                                <div class="input-wrapper white-input">
+
+                                    <i class="fa-regular fa-calendar-days field-icon"></i>
+
+                                    <input
+                                        type="date"
+                                        ng-model="date"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="premium-field">
+
+                                <label>
+
+                                    <span>
+                                        <i class="fa-regular fa-clock"></i>
+                                        Reminder time
+                                    </span>
+
+                                </label>
+
+
+                                <div class="input-wrapper white-input">
+
+                                    <i class="fa-regular fa-clock field-icon"></i>
+
+                                    <input
+                                        type="time"
+                                        ng-model="time"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- NOTES -->
+
+                    <div class="premium-field">
+
+                        <label>
+
+                            <span>
+                                <i class="fa-regular fa-note-sticky"></i>
+                                Additional notes
+                            </span>
+
+                            <small>Optional</small>
+
+                        </label>
+
+
+                        <div class="textarea-wrapper">
+
+                            <i class="fa-solid fa-pen field-icon"></i>
+
+                            <textarea
+                                ng-model="notes"
+                                rows="3"
+                                placeholder="e.g. Take after breakfast..."></textarea>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ACTION -->
+
+                    <div class="premium-actions">
+
+                        <a
+                            href="dashboard.html"
+                            class="back-button">
+
+                            <i class="fa-solid fa-arrow-left"></i>
+
+                            Cancel
+
+                        </a>
+
+
+                        <button
+                            type="submit"
+                            class="premium-save-button">
+
+                            <span>
+                                <i class="fa-solid fa-check"></i>
+                                Save Medicine
+                            </span>
+
+                            <i class="fa-solid fa-arrow-right arrow"></i>
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- SECURITY -->
+
+                    <div class="form-security">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        Your medicine information is securely stored.
+
+                    </div>
+
+                </form>
+
+            </section>
+
+        </div>
+
+
+
+        <!-- FOOTER -->
+
+        <footer class="dashboard-footer">
+
+            <span>
+                <i class="fa-solid fa-heart-pulse"></i>
+                Your health, our priority.
+            </span>
+
+            <span>
+                MedMate © 2026
+            </span>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+</body>
+</html>
+```

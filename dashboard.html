@@ -1,0 +1,1438 @@
+```html
+<!DOCTYPE html>
+<html lang="en" ng-app="medicineApp">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>MedMate | Dashboard</title>
+
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+
+    <!-- Font Awesome -->
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        rel="stylesheet">
+
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+
+    <!-- Existing CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <script src="js/app.js"></script>
+
+    <script src="js/controller.js"></script>
+
+
+    <!-- =====================================================
+         EDIT MEDICINE ADDITION
+         Only styling for Edit button and popup
+    ====================================================== -->
+
+    <style>
+
+        /* ==========================================
+           EDIT BUTTON
+        ========================================== */
+
+        .dashboard-edit {
+            width: 38px;
+            height: 38px;
+            border: none;
+            border-radius: 10px;
+            background: #eaf4ff;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .dashboard-edit:hover {
+            background: #2563eb;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+
+        /* ==========================================
+           EDIT POPUP OVERLAY
+        ========================================== */
+
+        .edit-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+
+
+        /* ==========================================
+           EDIT MODAL
+        ========================================== */
+
+        .edit-modal {
+            width: 100%;
+            max-width: 520px;
+            background: white;
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.25);
+            animation: editModalShow 0.25s ease;
+        }
+
+
+        @keyframes editModalShow {
+
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+        }
+
+
+        /* ==========================================
+           EDIT HEADER
+        ========================================== */
+
+        .edit-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+
+        .edit-title-area {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+
+        .edit-title-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: #eaf4ff;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+
+        .edit-title-area h3 {
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #172033;
+        }
+
+
+        .edit-title-area p {
+            margin: 3px 0 0;
+            color: #7b8497;
+            font-size: 13px;
+        }
+
+
+        .edit-close {
+            width: 38px;
+            height: 38px;
+            border: none;
+            border-radius: 10px;
+            background: #f4f6f8;
+            color: #687386;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+
+        .edit-close:hover {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+
+        /* ==========================================
+           EDIT FORM
+        ========================================== */
+
+        .edit-form-group {
+            margin-bottom: 17px;
+        }
+
+
+        .edit-form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+
+        .edit-form-control {
+            width: 100%;
+            border: 1px solid #dfe4ea;
+            border-radius: 11px;
+            padding: 11px 13px;
+            font-family: "DM Sans", sans-serif;
+            font-size: 14px;
+            color: #1f2937;
+            outline: none;
+            background: #fbfcfd;
+            transition: 0.2s ease;
+        }
+
+
+        .edit-form-control:focus {
+            border-color: #2563eb;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+
+
+        .edit-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+
+        /* ==========================================
+           EDIT FOOTER BUTTONS
+        ========================================== */
+
+        .edit-modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #edf0f3;
+        }
+
+
+        .edit-cancel-btn {
+            border: none;
+            padding: 11px 18px;
+            border-radius: 10px;
+            background: #f1f3f5;
+            color: #4b5563;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+
+        .edit-cancel-btn:hover {
+            background: #e5e7eb;
+        }
+
+
+        .edit-save-btn {
+            border: none;
+            padding: 11px 20px;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s ease;
+        }
+
+
+        .edit-save-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+
+        /* ==========================================
+           MOBILE
+        ========================================== */
+
+        @media (max-width: 600px) {
+
+            .edit-modal {
+                padding: 22px;
+                border-radius: 18px;
+            }
+
+            .edit-form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .edit-modal-footer {
+                flex-direction: column;
+            }
+
+            .edit-cancel-btn,
+            .edit-save-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body ng-controller="MedicineController">
+
+
+<div class="dashboard">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                <i class="fa-solid fa-capsules"></i>
+            </div>
+
+            <div>
+
+                <h2>MedMate</h2>
+
+                <small>
+                    HEALTH COMPANION
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            MAIN MENU
+        </div>
+
+
+        <ul>
+
+            <li class="active">
+
+                <a href="dashboard.html">
+
+                    <i class="fa-solid fa-table-cells-large"></i>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="add-medicine.html">
+
+                    <i class="fa-solid fa-prescription-bottle-medical"></i>
+
+                    <span>
+                        Add Medicine
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="reminder.html">
+
+                    <i class="fa-regular fa-clock"></i>
+
+                    <span>
+                        Reminder List
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a href="profile.html">
+
+                    <i class="fa-regular fa-user"></i>
+
+                    <span>
+                        My Profile
+                    </span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+
+        <div class="sidebar-spacer"></div>
+
+
+        <div class="sidebar-health-card">
+
+            <div class="health-card-icon">
+
+                <i class="fa-solid fa-heart-pulse"></i>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Stay on track
+                </strong>
+
+                <p>
+                    Small steps every day
+                    make a healthier you.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <a href="index.html"
+           class="logout">
+
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- HEADER -->
+
+        <header class="page-header">
+
+            <div>
+
+                <div class="breadcrumb">
+
+                    <span>
+                        MEDMATE
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                    <strong>
+                        Dashboard
+                    </strong>
+
+                </div>
+
+
+                <!-- DYNAMIC USER NAME -->
+
+                <h1>
+
+                    Good evening,
+
+                    <span id="dashboardUserName">
+                        User
+                    </span>
+
+                    👋
+
+                </h1>
+
+
+                <p>
+                    Here's your medication overview for today.
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+
+                <div class="date-badge">
+
+                    <i class="fa-regular fa-calendar"></i>
+
+                    <div>
+
+                        <strong>
+                            Today
+                        </strong>
+
+                        <small>
+                            Stay consistent
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="notification-button">
+
+                    <i class="fa-regular fa-bell"></i>
+
+                    <span>
+                        2
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+             HERO
+        ====================================================== -->
+
+        <section class="dashboard-hero">
+
+
+            <div class="hero-content">
+
+
+                <div class="hero-label">
+
+                    <i class="fa-solid fa-sparkles"></i>
+
+                    YOUR DAILY HEALTH ASSISTANT
+
+                </div>
+
+
+                <h2>
+
+                    Stay healthy.
+
+                    <br>
+
+                    <span>
+                        Stay on schedule.
+                    </span>
+
+                </h2>
+
+
+                <p>
+
+                    Keep your medication routine organized,
+                    track your doses and never lose sight of
+                    your daily health goals.
+
+                </p>
+
+
+                <div class="hero-actions">
+
+
+                    <a href="add-medicine.html"
+                       class="hero-primary">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Add Medicine
+
+                    </a>
+
+
+                    <a href="reminder.html"
+                       class="hero-secondary">
+
+                        <i class="fa-regular fa-clock"></i>
+
+                        View Reminders
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- HERO ILLUSTRATION -->
+
+            <div class="dashboard-illustration">
+
+
+                <div class="hero-circle hero-circle-one"></div>
+
+                <div class="hero-circle hero-circle-two"></div>
+
+
+                <!-- Main card -->
+
+                <div class="health-dashboard-card">
+
+
+                    <div class="mini-card-header">
+
+
+                        <div class="mini-card-logo">
+
+                            <i class="fa-solid fa-heart-pulse"></i>
+
+                        </div>
+
+
+                        <span>
+                            HEALTH TRACKER
+                        </span>
+
+
+                        <i class="fa-solid fa-ellipsis"></i>
+
+                    </div>
+
+
+
+                    <div class="health-score">
+
+
+                        <div class="score-ring">
+
+                            <div>
+
+                                <strong>
+                                    80
+                                </strong>
+
+                                <small>
+                                    %
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Daily progress
+                            </strong>
+
+                            <p>
+                                Keep going!
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="mini-progress">
+
+                        <div></div>
+
+                    </div>
+
+
+
+                    <div class="mini-card-footer">
+
+
+                        <span>
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                            4 doses tracked
+
+                        </span>
+
+
+                        <strong>
+                            Today
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Floating pills -->
+
+                <div class="dashboard-floating-icon icon-pill">
+
+                    <i class="fa-solid fa-pills"></i>
+
+                </div>
+
+
+                <div class="dashboard-floating-icon icon-heart">
+
+                    <i class="fa-solid fa-heart"></i>
+
+                </div>
+
+
+                <div class="dashboard-floating-icon icon-bell">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                </div>
+
+
+                <div class="dashboard-plus">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             SUMMARY TITLE
+        ====================================================== -->
+
+        <div class="dashboard-section-header">
+
+
+            <div>
+
+                <span>
+                    MEDICATION OVERVIEW
+                </span>
+
+                <h2>
+                    Today's Summary
+                </h2>
+
+            </div>
+
+
+            <div class="overview-status">
+
+                <i class="fa-solid fa-circle"></i>
+
+                All systems active
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =====================================================
+             STAT CARDS
+        ====================================================== -->
+
+        <section class="dashboard-stat-grid">
+
+
+            <!-- TOTAL -->
+
+            <div class="dashboard-stat-card">
+
+                <div class="stat-card-icon total">
+
+                    <i class="fa-solid fa-pills"></i>
+
+                </div>
+
+
+                <div class="stat-card-info">
+
+                    <span>
+                        Total medicines
+                    </span>
+
+                    <strong>
+                        {{totalMedicine()}}
+                    </strong>
+
+                    <small>
+
+                        <i class="fa-solid fa-arrow-up"></i>
+
+                        In your schedule
+
+                    </small>
+
+                </div>
+
+
+                <div class="card-decoration">
+
+                    <i class="fa-solid fa-capsules"></i>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- COMPLETED -->
+
+            <div class="dashboard-stat-card">
+
+                <div class="stat-card-icon completed">
+
+                    <i class="fa-solid fa-check"></i>
+
+                </div>
+
+
+                <div class="stat-card-info">
+
+                    <span>
+                        Completed
+                    </span>
+
+                    <strong>
+                        {{completedMedicine()}}
+                    </strong>
+
+                    <small>
+                        Doses completed
+                    </small>
+
+                </div>
+
+
+                <div class="card-decoration">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- UPCOMING -->
+
+            <div class="dashboard-stat-card">
+
+                <div class="stat-card-icon upcoming">
+
+                    <i class="fa-regular fa-clock"></i>
+
+                </div>
+
+
+                <div class="stat-card-info">
+
+                    <span>
+                        Upcoming
+                    </span>
+
+                    <strong>
+                        {{upcomingMedicine()}}
+                    </strong>
+
+                    <small>
+                        Still scheduled
+                    </small>
+
+                </div>
+
+
+                <div class="card-decoration">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PENDING -->
+
+            <div class="dashboard-stat-card">
+
+                <div class="stat-card-icon pending">
+
+                    <i class="fa-solid fa-hourglass-half"></i>
+
+                </div>
+
+
+                <div class="stat-card-info">
+
+                    <span>
+                        Pending
+                    </span>
+
+                    <strong>
+                        {{pendingMedicine()}}
+                    </strong>
+
+                    <small>
+                        Need attention
+                    </small>
+
+                </div>
+
+
+                <div class="card-decoration">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             MEDICINE SECTION
+        ====================================================== -->
+
+        <section class="dashboard-medicine-card">
+
+
+            <div class="medicine-header">
+
+
+                <div>
+
+                    <span>
+                        MEDICATION SCHEDULE
+                    </span>
+
+                    <h2>
+                        Your medicines
+                    </h2>
+
+                </div>
+
+
+                <a href="add-medicine.html"
+                   class="small-add-button">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Add new
+
+                </a>
+
+            </div>
+
+
+
+            <!-- SEARCH -->
+
+            <div class="dashboard-search">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    ng-model="searchMedicine"
+                    placeholder="Search medicine, dosage or frequency...">
+
+            </div>
+
+
+
+            <!-- MEDICINE ITEMS -->
+
+            <div class="medicine-list">
+
+
+                <div
+                    class="medicine-row"
+                    ng-repeat="medicine in medicines | filter:searchMedicine track by $index">
+
+
+                    <div class="medicine-main">
+
+
+                        <div class="medicine-picture">
+
+                            <i class="fa-solid fa-pills"></i>
+
+                        </div>
+
+
+                        <div class="medicine-details">
+
+                            <strong>
+
+                                {{medicine.medicine_name || medicine.name}}
+
+                            </strong>
+
+
+                            <span>
+
+                                <i class="fa-solid fa-prescription-bottle-medical"></i>
+
+                                {{medicine.dosage || medicine.dose}}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="medicine-time">
+
+                        <small>
+                            REMINDER
+                        </small>
+
+                        <strong>
+
+                            <i class="fa-regular fa-clock"></i>
+
+                            {{medicine.time}}
+
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="medicine-frequency">
+
+                        <span>
+                            {{medicine.frequency}}
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         MEDICINE ACTIONS
+                         EDIT ADDED HERE
+                    ================================================== -->
+
+                    <div class="medicine-actions">
+
+
+                        <!-- EDIT -->
+
+                        <button
+                            class="dashboard-edit"
+                            ng-click="openEditMedicine(medicine)"
+                            title="Edit Medicine">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                        </button>
+
+
+                        <!-- COMPLETE -->
+
+                        <button
+                            class="dashboard-complete"
+                            ng-click="completeMedicine(medicine)"
+                            title="Complete">
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </button>
+
+
+                        <!-- DELETE -->
+
+                        <button
+                            class="dashboard-delete"
+                            ng-click="deleteMedicine($index)"
+                            title="Delete">
+
+                            <i class="fa-solid fa-trash"></i>
+
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- EMPTY -->
+
+                <div
+                    class="dashboard-empty"
+                    ng-if="medicines.length == 0">
+
+
+                    <div class="empty-medical-icon">
+
+                        <i class="fa-solid fa-prescription-bottle-medical"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Your medicine list is empty
+                    </h3>
+
+
+                    <p>
+
+                        Add your first medicine to start
+                        building your medication schedule.
+
+                    </p>
+
+
+                    <a href="add-medicine.html">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Add Medicine
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             FOOTER
+        ====================================================== -->
+
+        <footer class="dashboard-footer">
+
+
+            <span>
+
+                <i class="fa-solid fa-heart-pulse"></i>
+
+                Your health, our priority.
+
+            </span>
+
+
+            <span>
+                MedMate © 2026
+            </span>
+
+
+        </footer>
+
+
+    </main>
+
+</div>
+
+
+
+<!-- =========================================================
+     EDIT MEDICINE POPUP
+     This appears only when Edit is clicked.
+========================================================== -->
+
+<div
+    class="edit-overlay"
+    ng-if="editingMedicine"
+    ng-click="closeEditMedicine()">
+
+
+    <div
+        class="edit-modal"
+        ng-click="$event.stopPropagation()">
+
+
+        <!-- HEADER -->
+
+        <div class="edit-modal-header">
+
+
+            <div class="edit-title-area">
+
+
+                <div class="edit-title-icon">
+
+                    <i class="fa-solid fa-pen"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Edit Medicine
+                    </h3>
+
+                    <p>
+                        Update your medication details
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="edit-close"
+                ng-click="closeEditMedicine()"
+                type="button">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+
+        <!-- FORM -->
+
+        <div class="edit-form-group">
+
+            <label>
+                Medicine Name
+            </label>
+
+            <input
+                type="text"
+                class="edit-form-control"
+                ng-model="editingMedicine.medicine_name"
+                placeholder="Enter medicine name">
+
+        </div>
+
+
+
+        <div class="edit-form-row">
+
+
+            <div class="edit-form-group">
+
+                <label>
+                    Dosage
+                </label>
+
+                <input
+                    type="text"
+                    class="edit-form-control"
+                    ng-model="editingMedicine.dosage"
+                    placeholder="Example: 1 tablet">
+
+            </div>
+
+
+            <div class="edit-form-group">
+
+                <label>
+                    Reminder Time
+                </label>
+
+                <input
+                    type="text"
+                    class="edit-form-control"
+                    ng-model="editingMedicine.time"
+                    placeholder="Example: 7:30 PM">
+
+            </div>
+
+        </div>
+
+
+
+        <div class="edit-form-group">
+
+            <label>
+                Frequency
+            </label>
+
+            <select
+                class="edit-form-control"
+                ng-model="editingMedicine.frequency">
+
+                <option value="">
+                    Select frequency
+                </option>
+
+                <option value="Daily">
+                    Daily
+                </option>
+
+                <option value="Twice Daily">
+                    Twice Daily
+                </option>
+
+                <option value="Three Times Daily">
+                    Three Times Daily
+                </option>
+
+                <option value="Weekly">
+                    Weekly
+                </option>
+
+                <option value="Monthly">
+                    Monthly
+                </option>
+
+                <option value="As Needed">
+                    As Needed
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <div class="edit-form-group">
+
+            <label>
+                Notes
+            </label>
+
+            <textarea
+                class="edit-form-control"
+                ng-model="editingMedicine.notes"
+                rows="3"
+                placeholder="Add notes about this medicine"></textarea>
+
+        </div>
+
+
+
+        <!-- FOOTER -->
+
+        <div class="edit-modal-footer">
+
+
+            <button
+                type="button"
+                class="edit-cancel-btn"
+                ng-click="closeEditMedicine()">
+
+                Cancel
+
+            </button>
+
+
+            <button
+                type="button"
+                class="edit-save-btn"
+                ng-click="updateMedicine()">
+
+                <i class="fa-solid fa-check"></i>
+
+                Save Changes
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     DYNAMIC USER NAME
+====================================================== -->
+
+<script>
+
+    /*
+       Get the username saved by index.html
+    */
+
+    const loggedInUser =
+        localStorage.getItem("medmate_username");
+
+
+    /*
+       Display the username in Dashboard
+    */
+
+    if (loggedInUser) {
+
+        document.getElementById(
+            "dashboardUserName"
+        ).textContent = loggedInUser;
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
+```
